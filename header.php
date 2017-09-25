@@ -28,12 +28,12 @@
 
 	<header id="masthead" class="site-header" role="banner">
 
-		<?php get_template_part( 'components/header/header', 'image' ); ?>
+		<?php get_template_part( 'template-parts/header/header', 'image' ); ?>
 
 		<?php if ( has_nav_menu( 'top' ) ) : ?>
 			<div class="navigation-top">
 				<div class="wrap">
-					<?php get_template_part( 'components/navigation/navigation', 'top' ); ?>
+					<?php get_template_part( 'template-parts/navigation/navigation', 'top' ); ?>
 				</div><!-- .wrap -->
 			</div><!-- .navigation-top -->
 		<?php endif; ?>
@@ -41,12 +41,17 @@
 	</header><!-- #masthead -->
 
 	<?php
-	// If a regular post or page, and not the front page, show the featured image.
-	if ( has_post_thumbnail() && ( is_single() || ( is_page() && ! twentyseventeen_is_frontpage() ) ) ) :
+
+	/*
+	 * If a regular post or page, and not the front page, show the featured image.
+	 * Using get_queried_object_id() here since the $post global may not be set before a call to the_post().
+	 */
+	if ( ( is_single() || ( is_page() && ! twentyseventeen_is_frontpage() ) ) && has_post_thumbnail( get_queried_object_id() ) ) :
 		echo '<div class="single-featured-image-header">';
-		the_post_thumbnail( 'twentyseventeen-featured-image' );
+		echo get_the_post_thumbnail( get_queried_object_id(), 'twentyseventeen-featured-image' );
 		echo '</div><!-- .single-featured-image-header -->';
 	endif;
 	?>
 
-	<div id="content" class="site-content">
+	<div class="site-content-contain">
+		<div id="content" class="site-content">
